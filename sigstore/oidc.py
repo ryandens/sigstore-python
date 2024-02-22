@@ -92,17 +92,7 @@ class IdentityToken:
         try:
             self._unverified_claims = jwt.decode(
                 raw_token,
-                options={
-                    "verify_signature": False,
-                    "verify_aud": True,
-                    "verify_iat": True,
-                    "verify_exp": True,
-                    # These claims are required by OpenID Connect, so
-                    # we can strongly enforce their presence.
-                    # See: https://openid.net/specs/openid-connect-basic-1_0.html#IDToken
-                    "require": ["aud", "sub", "iat", "exp", "iss"],
-                },
-                audience=DEFAULT_AUDIENCE,
+                options={"verify_signature": True, "verify_aud": True, "verify_iat": True, "verify_exp": True, "require": ["aud", "sub", "iat", "exp", "iss"],}, audience=DEFAULT_AUDIENCE,
                 # NOTE: This leeway shouldn't be strictly necessary, but is
                 # included to preempt any (small) skew between the host
                 # and the originating IdP.
