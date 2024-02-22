@@ -17,7 +17,7 @@ Functionality for interacting with a generic keyring.
 
 from __future__ import annotations
 
-from typing import List
+from typing import Optional, List
 
 import cryptography.hazmat.primitives.asymmetric.padding as padding
 from cryptography.exceptions import InvalidSignature
@@ -65,11 +65,12 @@ class Keyring:
     This structure exists to facilitate key rotation in a CT log.
     """
 
-    def __init__(self, keys: List[bytes] = []):
+    def __init__(self, keys: Optional[List[bytes]] = None):
         """
         Create a new `Keyring`, with `keys` as the initial set of signing
         keys. These `keys` can be in either DER format or PEM encoded.
         """
+        keys = [] if keys is None else keys
         self._keyring = {}
         for key_bytes in keys:
             key = None
