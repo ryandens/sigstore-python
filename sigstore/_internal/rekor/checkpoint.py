@@ -21,7 +21,7 @@ from __future__ import annotations
 import base64
 import re
 import struct
-from dataclasses import dataclass
+from dataclasses import field, dataclass
 from typing import List
 
 from pydantic import BaseModel, Field, StrictStr
@@ -146,7 +146,7 @@ class SignedNote:
             raise CheckpointError("Malformed Note: data section must end with newline!")
 
         sig_parser = re.compile(r"\u2014 (\S+) (\S+)\n")
-        signatures: list[RekorSignature] = []
+        signatures: list[RekorSignature] = field(default_factory=list)
         for name, signature in re.findall(sig_parser, data):
             signature_bytes: bytes = base64.b64decode(signature)
             if len(signature_bytes) < 5:
