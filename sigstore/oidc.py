@@ -32,6 +32,7 @@ import requests
 from pydantic import BaseModel, StrictStr
 
 from sigstore.errors import Error, NetworkError
+from security import safe_requests
 
 DEFAULT_OAUTH_ISSUER_URL = "https://oauth2.sigstore.dev/auth"
 STAGING_OAUTH_ISSUER_URL = "https://oauth2.sigstage.dev/auth"
@@ -260,7 +261,7 @@ class Issuer:
         )
 
         try:
-            resp: requests.Response = requests.get(oidc_config_url, timeout=30)
+            resp: requests.Response = safe_requests.get(oidc_config_url, timeout=30)
         except (requests.ConnectionError, requests.Timeout) as exc:
             raise NetworkError from exc
 
